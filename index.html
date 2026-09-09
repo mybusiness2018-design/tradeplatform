@@ -285,8 +285,8 @@ var NAV=[
  {k:'backup',t:'备份',te:'Backup',n:''}
 ];
 /* ============ 数据层 ============ */
-var KEY='wb_ftloop_';
-var RECOVERED={"_cpKw":"\"muslim pen quran\"","_custSheet":"\"deal\"","_custView":"\"card\"","_dealId":"\"Xmtp7os5mdf\"","_fcHist":["usb cable","power bank"],"_hotInd":"\"3c\"","_wsHist":["无线游戏手柄","power bank"],"cpq":[{"id":"Xmtqizreo4ro","kw":"MUSLIM GIFTS,ELECTRONIC GOODS,ETC","plat":"Alibaba","last":"","price":"","prev":"","hist":[]},{"id":"Xmtqizreo7jt","kw":"MUSLIM GIFTS,ELECTRONIC GOODS,ETC supplier","plat":"MIC","last":"","price":"","prev":"","hist":[]},{"id":"Xmtqizreo5z1","kw":"wholesale MUSLIM GIFTS,ELECTRONIC GOODS,ETC","plat":"1688","last":"","price":"","prev":"","hist":[]}],"deals":[{"id":"Xmtp7os5mdf","leadId":"L1","cnee":"Ahmed","no":"INV-2026-001","date":"2026-09-06","amt":0,"qty":0,"pkg":0,"gross":0,"net":0,"vessel":"","port":"","eta":"","incoterms":"FOB","transport":"sea","woodPkg":false,"lc":false,"destCountry":"","docs":{"invoice":"todo","packing":"todo","bl":"todo","coo":"todo","customs":"todo","insurance":"todo","draft":"todo","inspection":"todo","advice":"todo","beneficiary":"todo","weight":"todo","fumigation":"todo","customs_invoice":"todo","consular":"todo","shipping_co":"todo"}},{"id":"Xmtp8dvp23s8","leadId":"","cnee":"","no":"INV-2026-2","date":"2026-09-06","amt":0,"qty":0,"pkg":0,"gross":0,"net":0,"vessel":"","port":"","eta":"","incoterms":"FOB","transport":"sea","woodPkg":false,"lc":false,"destCountry":"","docs":{"invoice":"todo","packing":"todo","bl":"todo","coo":"todo","customs":"todo","insurance":"todo","draft":"todo","inspection":"todo","advice":"todo","beneficiary":"todo","weight":"todo","fumigation":"todo","customs_invoice":"todo","consular":"todo","shipping_co":"todo"}},{"id":"Xmtrxi6sc32m","leadId":"","cnee":"","no":"INV-2026-3","date":"2026-09-08","amt":0,"qty":0,"pkg":0,"gross":0,"net":0,"vessel":"","port":"","eta":"","incoterms":"FOB","transport":"sea","woodPkg":false,"lc":false,"destCountry":"","docs":{"invoice":"todo","packing":"todo","bl":"todo","coo":"todo","customs":"todo","insurance":"todo","draft":"todo","inspection":"todo","advice":"todo","beneficiary":"todo","weight":"todo","fumigation":"todo","customs_invoice":"todo","consular":"todo","shipping_co":"todo"}}],"docs":[{"id":"invoice","status":"todo","note":""},{"id":"packing","status":"todo","note":""},{"id":"bl","status":"todo","note":""},{"id":"coo","status":"todo","note":""},{"id":"customs","status":"todo","note":""},{"id":"insurance","status":"todo","note":""},{"id":"draft","status":"todo","note":""},{"id":"inspection","status":"todo","note":""},{"id":"advice","status":"todo","note":""},{"id":"beneficiary","status":"todo","note":""},{"id":"weight","status":"todo","note":""},{"id":"fumigation","status":"todo","note":""},{"id":"customs_invoice","status":"todo","note":""},{"id":"consular","status":"todo","note":""},{"id":"shipping_co","status":"todo","note":""}],"leads":[{"id":"Xmtpiw5333r3","name":"Haji","country":"马来西亚","market":"东南亚","contact":"0060123153511","product":"book stander","stage":"试样","amount":0,"last":"2026-09-06","note":"","logs":[],"wa":"0060123153511","email":"smaniaga0307@gmail.com"},{"id":"L1","name":"Ahmed","country":"UAE","market":"中东","contact":"+97150xxxx","product":"prayer pillow","stage":"成交","amount":1200,"last":"2026-09-06","note":"斋月礼盒意向","logs":[{"date":"2026-09-06","text":"斋月礼盒意向"}],"wa":"","email":"+97150xxxx"},{"id":"L2","name":"Siti","country":"Malaysia","market":"东南亚","contact":"+6012xxxx","product":"prayer pillow","stage":"成交","amount":0,"last":"2026-09-06","note":"","wa":"","email":"+6012xxxx"},{"id":"L3","name":"Omar","country":"Egypt","market":"中东","contact":"+2010xxxx","product":"prayer pillow blue","stage":"成交","amount":2400,"last":"2026-09-06","note":"等PI","logs":[{"date":"2026-09-06","text":"等PI"}],"wa":"","email":"+2010xxxx"},{"id":"L4","name":"John","country":"USA","market":"欧美","contact":"+1xxxx","product":"gift box","stage":"成交","amount":0,"last":"2026-09-06","note":"展会名片","wa":"","email":"+1xxxx"}],"me":{"name":"JOHN","company":"SHENZHEN I-SLAM TECH","years":"10","product":"MUSLIM GIFTS,ELECTRONIC GOODS,ETC","market":"中东，东南亚，美北，欧洲，澳洲等","whatsapp":"008613434764180"},"scripts":[{"id":"Xmtr02u3vk0","title":"冷开发邮件","en":"Subject:  supplier for  buyers — \n\nHi ,\n\nThis is JOHN from SHENZHEN I-SLAM TECH, 10 years supplier focused on Muslim prayer pillows & gifts.\n\nWe help  importers with: . Our blue prayer pillow runs at stable $2 FOB, with embroidered / gift-box premium lines for Ramadan & Hajj seasons.\n\nCould I send you our catalog and a sample for a quality check?\n\nBest,\nJOHN\nSHENZHEN I-SLAM TECH","zh":"原理：短、具体、给一个行动钩子（要样品）。禁忌：别写长篇公司介绍；别群发同一文案；别编造交期。","date":"2026-09-07"}],"tasks":[{"id":"T1","title":"给 Ahmed 寄绣金样品质检跟进","due":"2026-09-07","done":true,"clientId":"L1"},{"id":"T2","title":"Omar 报价 PI 待发","due":"2026-09-02","done":true,"clientId":"L3"},{"id":"T3","title":"Siti 二次触达推礼盒款","due":"2026-09-10","done":true,"clientId":"L2"}],"view":"\"pos\""};
+var KEY=(function(){try{var s=JSON.parse(localStorage.getItem('wb_auth_sess')||'null');if(s&&s.uid)return 'wb_ftloop_'+s.uid+'_';}catch(e){}return 'wb_ftloop_';})();
+var RECOVERED={};
 
 var ENC_ON=false,CK=null,MEM={};
 var HAS_SUBTLE=!!(typeof crypto!=='undefined'&&crypto.subtle);
@@ -2758,7 +2758,85 @@ function docChkPanel(d){
 }
 /* ============ 初始化 ============ */
 function init(){refreshAll();}
-boot();
+
+/* ===== 本地身份门禁（纯前端：账号与数据仅存本机浏览器，非云端账号） ===== */
+function wbHash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h.toString(16);}
+function wbSess(){try{return JSON.parse(localStorage.getItem('wb_auth_sess')||'null');}catch(e){return null;}}
+function wbHasSess(){var s=wbSess();return !!(s&&s.uid);}
+function wbSessKey(){var s=wbSess();return (s&&s.uid)?('wb_ftloop_'+s.uid+'_'):'wb_ftloop_';}
+function wbAccounts(){try{return JSON.parse(localStorage.getItem('wb_auth_accounts')||'[]');}catch(e){return [];}}
+function wbShowUserBar(name){
+  var b=document.getElementById('wbUserBar');if(b)return;
+  b=document.createElement('div');b.id='wbUserBar';
+  b.style.cssText='position:fixed;right:12px;bottom:12px;z-index:99999;background:#1f2a44;color:#fff;padding:6px 10px;border-radius:20px;font:13px/1.4 system-ui;box-shadow:0 2px 8px rgba(0,0,0,.3);';
+  b.innerHTML='\uD83D\uDC64 '+name+' · <span id="wbLogout" style="color:#7fd1ff;cursor:pointer;">退出</span>';
+  document.body.appendChild(b);
+  document.getElementById('wbLogout').onclick=function(){localStorage.removeItem('wb_auth_sess');location.reload();};
+}
+function wbAuthOK(uid,name){
+  localStorage.setItem('wb_auth_sess',JSON.stringify({uid:uid,name:name}));
+  KEY='wb_ftloop_'+uid+'_';
+  var o=document.getElementById('wbAuth');if(o)o.remove();
+  wbShowUserBar(name);
+  boot();
+}
+function wbRenderAuth(){
+  var css='#wbAuth{position:fixed;inset:0;z-index:100000;background:linear-gradient(135deg,#0f1830,#1b2b50);display:flex;align-items:center;justify-content:center;font-family:system-ui,"Microsoft YaHei",sans-serif;}'+
+    '#wbAuth .card{width:340px;max-width:92vw;background:#fff;border-radius:14px;padding:26px 24px;box-shadow:0 10px 40px rgba(0,0,0,.35);}'+
+    '#wbAuth h2{margin:0 0 4px;font-size:19px;color:#16233f;}'+
+    '#wbAuth .sub{margin:0 0 16px;font-size:12px;color:#8a93a6;}'+
+    '#wbAuth .tabs{display:flex;gap:8px;margin-bottom:14px;}'+
+    '#wbAuth .tab{flex:1;text-align:center;padding:8px;font-size:14px;border-radius:8px;cursor:pointer;background:#eef1f7;color:#5a6478;}'+
+    '#wbAuth .tab.on{background:#2b6cff;color:#fff;}'+
+    '#wbAuth label{display:block;font-size:12px;color:#55617a;margin:10px 0 4px;}'+
+    '#wbAuth input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d6dbe6;border-radius:8px;font-size:14px;}'+
+    '#wbAuth .btn{margin-top:16px;width:100%;padding:11px;border:0;border-radius:8px;background:#2b6cff;color:#fff;font-size:15px;cursor:pointer;}'+
+    '#wbAuth .msg{margin-top:10px;font-size:12px;min-height:16px;}'+
+    '#wbAuth .note{margin-top:12px;font-size:11px;color:#9aa3b5;line-height:1.5;}';
+  var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
+  var box=document.createElement('div');box.id='wbAuth';
+  box.innerHTML='<div class="card">'+
+    '<h2>外贸商业闭环工作台</h2>'+
+    '<p class="sub">请先实名登录，进入您自己的工作台</p>'+
+    '<div class="tabs"><div class="tab on" data-t="reg">注册</div><div class="tab" data-t="login">登录</div></div>'+
+    '<label>实名姓名 *</label><input id="wbName" placeholder="如：张三 / Mr. Ali">'+
+    '<label>邮箱 或 电话 *</label><input id="wbContact" placeholder="用于登录的身份标识">'+
+    '<label>密码 *</label><input id="wbPwd" type="password" placeholder="设置或输入密码">'+
+    '<button class="btn" id="wbGo">注册并进入</button>'+
+    '<div class="msg" id="wbMsg"></div>'+
+    '<p class="note">说明：本工作台为纯前端工具，账号与数据仅保存在您本机浏览器（localStorage），不是云端账号。同一台设备可多人各自登录、互不干扰；换设备需重新注册。</p>'+
+    '</div>';
+  document.body.appendChild(box);
+  var mode='reg';
+  box.querySelectorAll('.tab').forEach(function(t){t.onclick=function(){mode=t.getAttribute('data-t');box.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});t.classList.add('on');document.getElementById('wbGo').textContent=(mode==='reg'?'注册并进入':'登录进入');document.getElementById('wbMsg').textContent='';};});
+  document.getElementById('wbGo').onclick=function(){
+    var name=document.getElementById('wbName').value.trim();
+    var contact=document.getElementById('wbContact').value.trim();
+    var pwd=document.getElementById('wbPwd').value;
+    var msg=document.getElementById('wbMsg');
+    if(!name||!contact||!pwd){msg.style.color='#d33';msg.textContent='请完整填写姓名、邮箱/电话、密码';return;}
+    if(!/^[\w.+-]+@[\w-]+\.[\w.-]+$|^\+?[\d\s\-]{6,}$/.test(contact)){msg.style.color='#d33';msg.textContent='邮箱或电话格式不正确';return;}
+    var accs=wbAccounts();
+    if(mode==='reg'){
+      if(accs.some(function(a){return a.contact===contact;})){msg.style.color='#d33';msg.textContent='该邮箱/电话已注册，请切到“登录”';return;}
+      var uid='u'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+      accs.push({uid:uid,name:name,contact:contact,pw:wbHash(pwd)});
+      localStorage.setItem('wb_auth_accounts',JSON.stringify(accs));
+      wbAuthOK(uid,name);
+    }else{
+      var a=accs.find(function(x){return x.contact===contact;});
+      if(!a){msg.style.color='#d33';msg.textContent='未找到该账号，请先注册';return;}
+      if(a.pw!==wbHash(pwd)){msg.style.color='#d33';msg.textContent='密码错误';return;}
+      wbAuthOK(a.uid,a.name);
+    }
+  };
+}
+function authGate(){
+  if(wbHasSess()){ KEY=wbSessKey(); wbShowUserBar((wbSess().name||'用户')); boot(); return; }
+  wbRenderAuth();
+}
+
+authGate();
 </script>
 </body>
 </html>
