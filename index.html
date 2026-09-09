@@ -482,7 +482,7 @@ async function doClosePw(){
 function showLock(mode){
  var box=$('lock');if(!box)return;var h='';
  if(mode==='unlock'){
-  h+='<div class="lockcard"><div class="lockic">🔒</div><h2>'+TX('外贸闭环工作台','FT Loop Workbench')+'</h2><p class="muted">'+TX('已开启加密锁，输入密码解锁本地数据。','Encryption on. Enter password to unlock local data.')+'</p>';
+  h+='<div class="lockcard"><div class="lockic">🔒</div><h2>'+TX('外贸一体化平台','FT Loop Workbench')+'</h2><p class="muted">'+TX('已开启加密锁，输入密码解锁本地数据。','Encryption on. Enter password to unlock local data.')+'</p>';
   h+='<input id="lk_pw" type="password" class="lockin" placeholder="'+TX('启动密码','Password')+'" onkeydown="if(event.key===\'Enter\')doUnlock()">';
   h+='<button class="btn lockbtn" data-action="unlock">'+TX('解锁','Unlock')+'</button>';
   h+='<button class="locklink" data-action="lockReset">'+TX('忘记密码？清空数据','Forgot? Wipe data')+'</button></div>';
