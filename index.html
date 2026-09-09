@@ -235,6 +235,10 @@ svg{display:block}
     <div id="topbar" data-page-node-id="n0TeUE4pSeYx8OB3xQ6UGM">
       <button class="menu" data-action="toggleNav" aria-label="菜单" data-page-node-id="DNVCY8OlvRZP8ypgLqrpgb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2" data-page-node-id="fgLpdnbGkD125DIU6FFJ4o"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" data-page-node-id="QpriBtXjiFFkCGr652IboE"/></svg></button>
       <span class="ttl" data-page-node-id="acE9dNbAGmlMIi1HBYhBlS">外贸商业闭环工作台</span>
+      <span class="top-actions" style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <button class="btn mini" data-action="exportJson" title="一键导出全部数据为一个 JSON 文件（换设备/分享用）">⬇ 备份全部</button>
+        <button class="btn ghost mini" data-action="importJson" title="从备份文件一键恢复全部数据">⬆ 恢复</button>
+      </span>
     </div>
     <div id="today" data-page-node-id="jDTyZHpstIW37k7ODBYKvO"></div>
     <div id="view" data-page-node-id="cOj4DK3EuWProjgOJTL9RX"></div>
@@ -2085,25 +2089,49 @@ function saveMe(){
 }
 /* ============ 备份 ============ */
 function viewBackup(){
- var h=shead('backup',TX('数据只存本机。导出 JSON 备份，或重置后把文件发给别人用。','Data stays local. Export JSON, or reset & share the file.')+'');
+ var h=shead('backup',TX('数据只存本机。点顶部「备份全部」可一键导出全部数据成一个文件，换设备/重装后再「恢复」即可。','Data stays local. Use the top “Backup all” to export everything to one file; restore on a new device.')+'');
  var cnt=S.leads.length+S.tasks.length+S.scripts.length+S.coach.length;
- h+='<div class="card"><h3 style="margin:0 0 8px;font-size:15px">'+TX('数据备份','Backup')+'</h3><p class="muted" style="margin:0 0 10px">'+TX('当前共 ','Currently ')+cnt+TX(' 条数据。导出后换设备/重装可导入恢复。',' records. Export to migrate/restore.')+'</p><div class="row"><button class="btn" data-action="exportJson">'+TX('导出 JSON 备份','Export JSON')+'</button><button class="btn ghost" data-action="importJson">'+TX('导入恢复','Import')+'</button><button class="btn ghost" data-action="restoreBak">'+TX('恢复自动备份','Restore auto-backup')+'</button><button class="btn danger" data-action="resetAll">'+TX('清空重置','Reset all')+'</button></div><input type="file" id="impFile" accept="application/json" style="display:none"></div>';
+ h+='<div class="card"><h3 style="margin:0 0 8px;font-size:15px">'+TX('数据备份','Backup')+'</h3><p class="muted" style="margin:0 0 10px">'+TX('当前共 ','Currently ')+cnt+TX(' 条数据。导出后换设备/重装可导入恢复。',' records. Export to migrate/restore.')+'</p><div class="row"><button class="btn" data-action="exportJson">'+TX('全量备份','Full backup')+'</button><button class="btn ghost" data-action="importJson">'+TX('导入恢复全部','Import all')+'</button><button class="btn ghost" data-action="restoreBak">'+TX('恢复自动备份','Restore auto-backup')+'</button><button class="btn danger" data-action="resetAll">'+TX('清空重置','Reset all')+'</button></div><input type="file" id="impFile" accept="application/json" style="display:none"></div>';
  h+='<div class="card" style="margin-top:14px;background:#fff7ed"><h3 style="margin:0 0 6px;font-size:15px">🔒 '+TX('启动密码锁（本地加密存储）','Password lock (local encryption)')+'</h3><p class="muted" style="margin:0 0 10px">'+TX('开启后每次打开需输入密码，本地数据以 AES 加密存储（设备丢失也不怕）。密码无法找回，请牢记。','After on, every open asks password; data stored AES-encrypted. Password can’t be recovered — remember it.')+'</p><div class="row"><span class="tag '+(ENC_ON?'a':'')+'">'+(ENC_ON?TX('已开启','ON'):TX('未开启','OFF'))+'</span> '+(ENC_ON?'<button class="btn ghost" data-action="openChangePw">'+TX('修改密码','Change')+'</button><button class="btn ghost" data-action="openClosePw">'+TX('关闭密码锁','Turn off')+'</button>':'<button class="btn" data-action="openSetPw">'+TX('设置启动密码','Set password')+'</button>')+'</div></div>';
  h+='<div class="card" style="margin-top:14px;background:#f8fafc"><h3 style="margin:0 0 6px;font-size:15px">'+TX('给别人用（帮人模式）','For others (help mode)')+'</h3><p class="muted" style="margin:0">'+TX('直接把这个 HTML 文件发给同事/学员即可。点"清空重置"抹掉你的客户数据，对方打开是空白示例，从"教练诊断"开始帮他做体检。数据始终只在各自本机。','Send this HTML to colleagues/students. Reset clears your data; they open a blank example and start from Coach. Data stays on each device.')+'</p></div>';
  return h;
 }
 function exportJson(){
- var dump={me:S.me,leads:S.leads,tasks:S.tasks,scripts:S.scripts,coach:S.coach,exported:todayStr()};
+ var dump={__wb_format:1,__wb_version:'full',exported:todayStr()};
+ PERSIST_KEYS.forEach(function(k){
+   var val;
+   if(k in S && S[k]!==undefined){val=S[k];}
+   else{try{var raw=localStorage.getItem(KEY+k);val=(raw!==null)?JSON.parse(raw):undefined;}catch(e){val=undefined;}}
+   if(val!==undefined)dump[k]=val;
+ });
  var str=JSON.stringify(dump,null,2);
- var a=document.createElement('a');a.download='外贸闭环备份_'+todayStr()+'.json';
+ var a=document.createElement('a');a.download='外贸工作台_全量备份_'+todayStr()+'.json';
  try{var blob=new Blob([str],{type:'application/json'});a.href=(window.URL&&URL.createObjectURL)?URL.createObjectURL(blob):('data:application/json;charset=utf-8,'+encodeURIComponent(str));}
  catch(e){a.href='data:application/json;charset=utf-8,'+encodeURIComponent(str);}
- a.click();toast(TX('已导出','Exported'));
+ a.click();toast(TX('已导出全量备份（'+Object.keys(dump).length+' 项数据）','Full backup exported ('+Object.keys(dump).length+' items)'));
 }
-function importJson(){var f=$('impFile');f.click();f.onchange=function(){var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);
- if(!d||typeof d!=='object'){toast(TX('文件格式错误','Bad file'));return;}var _arr=function(k){return (d[k]&&Object.prototype.toString.call(d[k])==='[object Array]')?d[k].filter(function(x){return x&&typeof x==='object';}):[];};S.leads=_arr('leads');S.tasks=_arr('tasks');S.scripts=_arr('scripts');S.coach=_arr('coach');if(d.me&&typeof d.me==='object')S.me=d.me;
- save('leads',S.leads);save('tasks',S.tasks);save('scripts',S.scripts);save('coach',S.coach);save('me',S.me);toast(TX('已恢复','Restored'));refreshAll();
- }catch(e){toast(TX('文件格式错误','Bad file'));}};r.readAsText(f.files[0]);};}
+function importJson(){
+ var f=document.createElement('input');f.type='file';f.accept='application/json,.json';
+ f.onchange=function(){
+  var file=(f.files||[])[0];if(!file)return;
+  var r=new FileReader();
+  r.onload=function(){
+   try{
+     var d=JSON.parse(String(r.result||''));
+     if(!d||typeof d!=='object'){toast(TX('文件格式错误','Bad file'));return;}
+     var n=0;
+     PERSIST_KEYS.forEach(function(k){
+       if(k in d && d[k]!==undefined){S[k]=d[k];save(k,S[k]);n++;}
+     });
+     if(d.me&&typeof d.me==='object'){S.me=d.me;save('me',S.me);}
+     toast(TX('已恢复 '+n+' 类数据，刷新中…','Restored '+n+' sets, refreshing…'));
+     refreshAll();
+   }catch(e){toast(TX('文件解析失败，请确认是备份文件','Parse failed — not a backup file'));}
+  };
+  r.readAsText(file);
+ };
+ f.click();
+}
 function resetAll(){
  openModal(TX('清空重置','Reset all'),TX('确定清空所有客户/任务/话术/诊断数据？此操作不可撤销。清空后你可直接把文件发给别人用。','Clear all leads/tasks/scripts/diagnostics? Irreversible. After reset you can share the file.'),function(){
   for(var i=localStorage.length-1;i>=0;i--){var k=localStorage.key(i);if(k&&k.indexOf(KEY)===0)localStorage.removeItem(k);}
