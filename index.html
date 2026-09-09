@@ -61,8 +61,8 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--main)}
 svg{display:block}
 #app{display:flex;min-height:100vh}
 #side{width:212px;flex:0 0 212px;background:#fff;border-right:1px solid var(--line);padding:14px 10px;position:sticky;top:0;height:100vh;overflow-y:auto}
-#side .logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;padding:4px 8px 12px}
-#side .logo .dt{width:30px;height:30px;background:#f1f5f9;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff}
+#side .logo{display:flex;align-items:center;gap:6px;font-weight:800;font-size:13px;padding:3px 6px 8px}
+#side .logo .dt{width:15px;height:15px;background:#f1f5f9;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff}
 .navitem{display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:10px;color:var(--sub);font-size:14px;font-weight:600;margin-bottom:2px;width:100%;text-align:left;background:none;border:none}
 .navitem:hover{background:#f1f5f9}
 .navitem.on{background:#eff6ff;color:var(--main)}
@@ -227,7 +227,7 @@ svg{display:block}
 <div id="lock" style="display:none"></div>
 <div id="app" data-page-node-id="YObjSycQ41K2WY5tNqyLaZ">
   <aside id="side" data-page-node-id="vTg2smxCEJ3W0zaaAT4DnA">
-    <div class="logo" data-page-node-id="RuCPTDyKNsvcp0dkJChpVd"><span class="dt" data-page-node-id="Ls5fkTwxZItcaTSRymQDAr"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="GYX6vjiXDeEaGaoQk0tqRe"><g stroke="#2563eb"><circle cx="9.5" cy="12" r="7" data-page-node-id="ButdhMFXHjDyftIcMvgqO0"/><path d="M2.5 12h14" data-page-node-id="yYEyHmovhzN7nIObWeaGmh"/><path d="M9.5 5c2 2 2 12 0 14" data-page-node-id="qkkKibSvftqvGAySjHNq4D"/><path d="M9.5 5c-2 2-2 12 0 14" data-page-node-id="AulV8cGq77REX6TwWamlHw"/></g><path stroke="#f59e0b" d="M12.5 9l8-4-3 8 3 5-7-4" data-page-node-id="Gd0P1EDyb0P7yQVGoC3cFu"/></svg></span>外贸一体化平台</div>
+    <div class="logo" data-page-node-id="RuCPTDyKNsvcp0dkJChpVd"><span class="dt" data-page-node-id="Ls5fkTwxZItcaTSRymQDAr"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="GYX6vjiXDeEaGaoQk0tqRe"><g stroke="#2563eb"><circle cx="9.5" cy="12" r="7" data-page-node-id="ButdhMFXHjDyftIcMvgqO0"/><path d="M2.5 12h14" data-page-node-id="yYEyHmovhzN7nIObWeaGmh"/><path d="M9.5 5c2 2 2 12 0 14" data-page-node-id="qkkKibSvftqvGAySjHNq4D"/><path d="M9.5 5c-2 2-2 12 0 14" data-page-node-id="AulV8cGq77REX6TwWamlHw"/></g><path stroke="#f59e0b" d="M12.5 9l8-4-3 8 3 5-7-4" data-page-node-id="Gd0P1EDyb0P7yQVGoC3cFu"/></svg></span>外贸一体化平台</div>
     <div id="nav" data-page-node-id="dPOdZKqPFuVIUZnihx8a0d"></div>
   </aside>
   <div id="mask" data-page-node-id="emP0Z9ZwHPwD0aS97fGZ8a"></div>
@@ -2091,8 +2091,7 @@ function saveMe(){
 function viewBackup(){
  var h=shead('backup',TX('数据只存本机。点顶部「备份全部」可一键导出全部数据成一个文件，换设备/重装后再「恢复」即可。','Data stays local. Use the top “Backup all” to export everything to one file; restore on a new device.')+'');
  var cnt=S.leads.length+S.tasks.length+S.scripts.length+S.coach.length;
- h+='<div class="card"><h3 style="margin:0 0 8px;font-size:15px">'+TX('数据备份','Backup')+'</h3><p class="muted" style="margin:0 0 10px">'+TX('当前共 ','Currently ')+cnt+TX(' 条数据。导出后换设备/重装可导入恢复。',' records. Export to migrate/restore.')+'</p><div class="row"><button class="btn" data-action="exportJson">'+TX('全量备份','Full backup')+'</button><button class="btn ghost" data-action="importJson">'+TX('导入恢复全部','Import all')+'</button><button class="btn ghost" data-action="restoreBak">'+TX('恢复自动备份','Restore auto-backup')+'</button><button class="btn danger" data-action="resetAll">'+TX('清空重置','Reset all')+'</button></div><input type="file" id="impFile" accept="application/json" style="display:none"></div>';
- h+='<div class="card" style="margin-top:14px;background:#fff7ed"><h3 style="margin:0 0 6px;font-size:15px">🔒 '+TX('启动密码锁（本地加密存储）','Password lock (local encryption)')+'</h3><p class="muted" style="margin:0 0 10px">'+TX('开启后每次打开需输入密码，本地数据以 AES 加密存储（设备丢失也不怕）。密码无法找回，请牢记。','After on, every open asks password; data stored AES-encrypted. Password can’t be recovered — remember it.')+'</p><div class="row"><span class="tag '+(ENC_ON?'a':'')+'">'+(ENC_ON?TX('已开启','ON'):TX('未开启','OFF'))+'</span> '+(ENC_ON?'<button class="btn ghost" data-action="openChangePw">'+TX('修改密码','Change')+'</button><button class="btn ghost" data-action="openClosePw">'+TX('关闭密码锁','Turn off')+'</button>':'<button class="btn" data-action="openSetPw">'+TX('设置启动密码','Set password')+'</button>')+'</div></div>';
+ h+='<div class="card"><h3 style="margin:0 0 8px;font-size:15px">'+TX('数据备份','Backup')+'</h3><p class="muted" style="margin:0 0 10px">'+TX('当前共 ','Currently ')+cnt+TX(' 条数据。导出后换设备/重装可导入恢复。',' records. Export to migrate/restore.')+'</p><div class="row"><button class="btn" data-action="exportJson">'+TX('全量备份','Full backup')+'</button><button class="btn ghost" data-action="importJson">'+TX('导入恢复全部','Import all')+'</button><button class="btn danger" data-action="resetAll">'+TX('清空重置','Reset all')+'</button></div><input type="file" id="impFile" accept="application/json" style="display:none"></div>';
  h+='<div class="card" style="margin-top:14px;background:#f8fafc"><h3 style="margin:0 0 6px;font-size:15px">'+TX('给别人用（帮人模式）','For others (help mode)')+'</h3><p class="muted" style="margin:0">'+TX('直接把这个 HTML 文件发给同事/学员即可。点"清空重置"抹掉你的客户数据，对方打开是空白示例，从"教练诊断"开始帮他做体检。数据始终只在各自本机。','Send this HTML to colleagues/students. Reset clears your data; they open a blank example and start from Coach. Data stays on each device.')+'</p></div>';
  return h;
 }
@@ -2318,7 +2317,6 @@ document.addEventListener('click',function(e){
  else if(a==='trashToggle'){trashToggle();}
  else if(a==='leadRestore'){leadRestore(el.dataset.id);}
  else if(a==='trashEmpty'){trashEmpty();}
- else if(a==='restoreBak'){restoreBak();}
  else if(a==='emGmail'){var g='https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(el.dataset.to)+'&su='+el.dataset.su+'&body='+el.dataset.bd;if(typeof window!=='undefined'&&window.open){window.open(g,'_blank');}else{location.href=g;}logSend(el.dataset.id,'email',decodeURIComponent(el.dataset.bd));}
  else if(a==='emClient'){var mt=el.dataset.mailto;var _bd=decodeURIComponent((mt.split('body=')[1]||'').split('&')[0]||'');if(mt.length>1950){copyText(_bd);toast(TX('正文过长，已复制全文到剪贴板，请粘贴到邮件','Body too long, copied to clipboard, paste into mail'));}else if(typeof window!=='undefined'&&window.open){window.open(mt,'_blank');}else{location.href=mt;}logSend(el.dataset.id,'email',_bd);}
  else if(a==='emCopy'){var full='To: '+el.dataset.to+'\nSubject: '+decodeURIComponent(el.dataset.su)+'\n\n'+decodeURIComponent(el.dataset.bd);if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(full).then(function(){toast(TX('已复制完整邮件，去任意邮箱粘贴即可','Email copied, paste into any mail app'));},function(){toast(full);});}else{toast(full);}logSend(el.dataset.id,'email',decodeURIComponent(el.dataset.bd));}
@@ -2360,9 +2358,6 @@ document.addEventListener('click',function(e){
  else if(a==='closePw'){doClosePw();}
  else if(a==='hideLock'){hideLock();}
  else if(a==='lockReset'){lockReset();}
- else if(a==='openSetPw'){showLock('set');}
- else if(a==='openChangePw'){showLock('change');}
- else if(a==='openClosePw'){showLock('close');}
  else if(a==='libTab'){S._libTab=el.dataset.tab;var lw=$('libWrap');if(lw)lw.innerHTML=libInner();}
  else if(a==='tplSave'){tplSave(el.dataset.i);}
  else if(a==='closeModal'){closeModal();}
@@ -2510,7 +2505,6 @@ function renderTrash(){var t=S.trash||[];if(!t.length)return '<div class="card m
 function leadRestore(id){var t=S.trash||[];for(var i=0;i<t.length;i++){if(t[i].id===id){S.leads.unshift(t[i]);t.splice(i,1);break;}}save('leads',S.leads);save('trash',S.trash);refreshAll();toast(TX('已恢复','Restored'));}
 function trashEmpty(){if(!confirm(TX('永久清空回收站？此操作不可恢复','Permanently empty trash?'))){return;}S.trash=[];save('trash',S.trash);refreshAll();toast(TX('已清空','Emptied'));}
 function snapLeads(){try{localStorage.setItem(KEY+'leads_bak',JSON.stringify(S.leads));}catch(e){}}
-function restoreBak(){var b=load('leads_bak',null);if(!b||!b.length){toast(TX('没有可用自动备份','No auto-backup available'));return;}if(!confirm(TX('用上一自动备份覆盖当前线索？回收站内的不受影响，此操作不可撤销。','Overwrite current leads with last auto-backup? Trash unaffected. Irreversible.'))){return;}S.leads=b;save('leads',S.leads);refreshAll();toast(TX('已恢复备份','Backup restored'));}
 function leadEdit(id){
  var l=S.leads.find(function(x){return x.id===id;});if(!l)return;
  var f='<div class="grid g2" style="gap:10px;margin-top:6px">'
