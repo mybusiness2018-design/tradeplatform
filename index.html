@@ -3322,5 +3322,66 @@ function authGate(){
 
 authGate();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="window.__sbErr=true"></script>
+<script>
+(function(){
+  var CFG_KEY='sync_cfg', AUTO_KEY='sync_auto', ROW='main';
+  function $(s){return document.querySelector(s);}
+  function el(t,c){var e=document.createElement(t);if(c)e.className=c;return e;}
+  function getCfg(){try{return JSON.parse(localStorage.getItem(CFG_KEY)||'{}');}catch(e){return {};}}
+  function setCfg(o){localStorage.setItem(CFG_KEY,JSON.stringify(o));}
+  function snapshot(){var o={},k;for(var i=0;i<localStorage.length;i++){k=localStorage.key(i);if(k===CFG_KEY)continue;o[k]=localStorage.getItem(k);}return o;}
+  function restore(s){if(!s)return;var k;for(k in s){if(k===CFG_KEY)continue;try{localStorage.setItem(k,s[k]);}catch(e){}}
+    if(typeof refreshAll==='function'){try{refreshAll();}catch(e){location.reload();}}}
+
+  var btn=el('button');btn.id='syncFab';btn.textContent='☁ 云同步';
+  btn.style.cssText='position:fixed;right:16px;bottom:16px;z-index:9999;background:#1e3a8a;color:#fff;border:0;border-radius:24px;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(30,58,138,.35)';
+  document.body.appendChild(btn);
+
+  var ov=el('div');ov.id='syncModal';
+  ov.style.cssText='display:none;position:fixed;inset:0;z-index:10000;background:rgba(15,23,42,.45);align-items:center;justify-content:center';
+  var box=el('div');
+  box.style.cssText='background:#fff;width:440px;max-width:92vw;max-height:88vh;overflow:auto;border-radius:16px;padding:20px;font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif;color:#0f172a';
+  ov.appendChild(box);document.body.appendChild(ov);
+
+  function status(msg,ok){var s=$('#syncStatus');if(s)s.textContent=msg;s&&(s.style.color=ok===false?'#dc2626':(ok===true?'#16a34a':'#475569'));}
+
+  function render(){
+    var cfg=getCfg();var H=[];
+    H.push('<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h3 style="margin:0;font-size:18px">☁ 云同步 Cloud Sync</h3><span id="syncClose" style="cursor:pointer;font-size:20px;color:#94a3b8">×</span></div>');
+    H.push('<p style="color:#64748b;font-size:13px;line-height:1.6;margin:0 0 12px">把本机资料整体备份到云端，换电脑打开同一网页即可自动跟随。资料存到你的 Supabase 项目（第三方云数据库）。</p>');
+    H.push('<label style="font-size:13px;font-weight:600">Supabase URL</label><input id="sbUrl" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;margin:4px 0 10px" placeholder="https://xxxx.supabase.co">');
+    H.push('<label style="font-size:13px;font-weight:600">Anon Key</label><input id="sbKey" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;margin:4px 0 12px" placeholder="eyJhbGci...">');
+    H.push('<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px"><button id="sbSave" style="background:#1e3a8a;color:#fff;border:0;border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer">保存配置</button><button id="sbPush" style="background:#16a34a;color:#fff;border:0;border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer">上传到云端</button><button id="sbPull" style="background:#2563eb;color:#fff;border:0;border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer">从云端拉取</button></div>');
+    H.push('<label style="font-size:13px;display:flex;align-items:center;gap:8px;margin-bottom:10px"><input type="checkbox" id="sbAuto"> 自动同步（每30秒上传 + 打开时拉取）</label>');
+    H.push('<div id="syncStatus" style="font-size:13px;min-height:18px;margin-bottom:8px"></div>');
+    H.push('<details style="font-size:12px;color:#64748b"><summary style="cursor:pointer">首次使用设置步骤</summary><ol style="line-height:1.7;padding-left:18px;margin:8px 0"><li>注册免费 supabase.com 项目。</li><li>SQL Editor 执行：<br><code style="display:block;background:#f1f5f9;padding:6px;border-radius:6px;white-space:pre-wrap">create table app_sync(id text primary key, data jsonb not null, updated_at timestamptz default now());<br>alter table app_sync enable row level security;<br>create policy anon_all on app_sync for all to anon using(true) with check(true);</code></li><li>Project Settings → API 复制 URL 与 anon public key 填入上方。</li><li>API → CORS 允许来源加 * 或你的网页域名，确保 file:// 也能连。</li></ol><p style="color:#b45309">隐私提示：此方式为单人共享密钥，资料对持有该网页的人可读。自用足够；如要更强隔离可后续加账号登录。</p></details>');
+    box.innerHTML=H.join('');
+    if(cfg.url)$('#sbUrl').value=cfg.url;
+    if(cfg.key)$('#sbKey').value=cfg.key;
+    $('#sbAuto').checked=localStorage.getItem(AUTO_KEY)==='1';
+    $('#syncClose').onclick=closeModal;
+    $('#sbSave').onclick=function(){setCfg({url:$('#sbUrl').value.trim(),key:$('#sbKey').value.trim()});status('配置已保存',true);};
+    $('#sbPush').onclick=doPush;
+    $('#sbPull').onclick=doPull;
+    $('#sbAuto').onchange=function(){localStorage.setItem(AUTO_KEY,this.checked?'1':'0');if(this.checked){status('已开启自动同步');startAuto();}else{stopAuto();status('已关闭自动同步');}};
+  }
+  function client(){var cfg=getCfg();if(!cfg.url||!cfg.key){status('请先填写并保存 Supabase URL / Anon Key',false);return null;}
+    if(window.__sbErr||!window.supabase){status('同步库未加载（需联网）',false);return null;}
+    try{return supabase.createClient(cfg.url,cfg.key);}catch(e){status('连接失败：'+e.message,false);return null;}}
+  function doPush(){var sb=client();if(!sb)return;status('上传中…');
+    var data=snapshot();
+    sb.from('app_sync').upsert({id:ROW,data:data,updated_at:new Date().toISOString()}).then(function(r){if(r.error)status('上传失败：'+r.error.message,false);else status('已上传 '+Object.keys(data).length+' 项到云端 ✓',true);}).catch(function(e){status('上传失败：'+e.message,false);});}
+  function doPull(){var sb=client();if(!sb)return;status('拉取中…');
+    sb.from('app_sync').select('data').eq('id',ROW).single().then(function(r){if(r.error)status('拉取失败：'+r.error.message,false);else if(r.data&&r.data.data){restore(r.data.data);status('已从云端恢复资料 ✓ 正在刷新…',true);}else status('云端暂无数据',false);}).catch(function(e){status('拉取失败：'+e.message,false);});}
+  var timer=null;
+  function startAuto(){stopAuto();timer=setInterval(function(){var sb=client();if(!sb)return;sb.from('app_sync').upsert({id:ROW,data:snapshot(),updated_at:new Date().toISOString()}).then(function(r){if(!r.error)status('自动同步已上传 ✓',true);}).catch(function(){});},30000);}
+  function stopAuto(){if(timer){clearInterval(timer);timer=null;}}
+  function openModal(){render();ov.style.display='flex';if(localStorage.getItem(AUTO_KEY)==='1'){var sb=client();if(sb){status('自动同步开启中…');sb.from('app_sync').select('data').eq('id',ROW).single().then(function(r){if(r.data&&r.data.data){restore(r.data.data);status('已自动拉取最新资料 ✓',true);}}).catch(function(){});}}}
+  function closeModal(){ov.style.display='none';}
+  btn.onclick=openModal;
+  ov.onclick=function(e){if(e.target===ov)closeModal();};
+})();
+</script>
 </body>
 </html>
