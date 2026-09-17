@@ -2178,7 +2178,7 @@ var EXT_DEFS=[
    {k:'note',a:'备注|note|notes|remark|memo',zh:'备注',en:'Note'}],
   eg:['UAE 2026 进口关税表','市场资料','税率与清关要求…','海关官网','2026-09-10','']}
 ];
-function extDef(k){for(var i=0;i<EXT_DEFS.length;i++){if(EXT_DEFS[i].k===k)return EXT_DEFS[i];}return EXT_DEFS[0];}
+function extDef(k){for(var i=0;i<EXT_DEFS.length;i++){if(EXT_DEFS[i].k===k)return EXT_DEFS[i];}return EXT_DEFS[0];}function extRow(id){if(!id)return null;var ex=(S.ext||[]).filter(function(x){return x.id===id;});return ex[0]||null;}function dealLinked(d){if(!d)return {supplier:null,product:null};return {supplier:extRow(d.supplierId),product:extRow(d.productId)};}
 function extType(){return S._extType||'customer';}
 function extCount(type){return (type==='customer')?(S.leads||[]).length:(S.ext||[]).filter(function(x){return x.type===type;}).length;}
 function extNorm(s){return String(s||'').trim().toLowerCase().replace(/[\s_\-\.\/（）()]/g,'');}
@@ -2917,7 +2917,7 @@ function sceneBox(keys){
  var meTip=needMe?'<div class="client-banner" style="border-color:#f59e0b">'+TX('提示：去「我的资料」填姓名/公司/年数，话术署名才完整。','Tip: fill My Profile (name/company/years) so signatures are complete.')+' <button class="btn ghost mini" data-action="nav" data-view="me">'+TX('去填资料','Fill profile')+'</button></div>':'';
  var h=banner+meTip+'<div class="grid g2">';
  h+='<div class="card"><div class="field"><label>'+TX('场景','Scene')+'</label><select id="sc_sel">'+keys.map(function(k){return '<option value="'+k+'">'+scTitle(k)+'</option>';}).join('')+'</select></div><div id="sc_fields"></div><button class="btn" data-action="genScene">'+TX('生成话术','Generate script')+'</button><div class="hint">'+TX('第一次填"我的资料"后，署名自动带入。','After filling My Profile once, signature auto-fills.')+'</div></div>';
- h+='<div class="card"><h3 style="margin:0 0 8px;font-size:15px">'+TX('英文（照发）','English (send as-is)')+'</h3><div style="margin:6px 0 10px"><label style="font-size:12px;color:var(--sub);margin-right:6px">'+TX('发送给','Send to')+'</label><select id="sc_pick" onchange="scPick(this.value)">'+_pickOpts+'</select>'+(!S._activeClient?'<button class="btn ghost mini" data-action="leadNew" style="margin-left:6px">＋ '+TX('加为新线索','Add as lead')+'</button>':'')+'</div><div class="out" id="sc_en">'+TX('选择场景并填变量后生成。','Pick a scene and fill vars.')+'</div><button class="btn ghost mini" data-action="copy" data-copy="sc_en" style="margin:8px 6px 0 0">'+TX('复制英文','Copy EN')+'</button><button class="btn ghost mini" data-action="saveScene" style="margin-top:8px">'+TX('存到话术库','Save to library')+'</button><button class="btn ghost mini" data-action="nav" data-view="lib" style="margin-top:8px">'+TX('查看话术库 →','View library →')+'</button><button class="btn ghost mini" data-action="nav" data-view="mails" style="margin-top:8px">'+TX('发送记录','Sent log')+'</button><button class="btn amber mini" data-action="bulkOpen" style="margin-top:8px">'+TX('群发助手','Bulk send')+'</button><button class="btn amber mini" data-action="sceneSend" data-ch="wa" style="margin:8px 6px 0 0">'+TX('发 WhatsApp','Send WA')+'</button><button class="btn ghost mini" data-action="sceneSend" data-ch="email" style="margin:8px 6px 0 0">'+TX('发邮件','Send Email')+'</button><h3 style="margin:14px 0 8px;font-size:15px">'+TX('中文（原理/禁忌）','Chinese (why/taboo)')+'</h3><div class="out zh" id="sc_zh"></div></div>';
+ h+='<div class="card"><h3 style="margin:0 0 8px;font-size:15px">'+TX('英文（照发）','English (send as-is)')+'</h3><div style="margin:6px 0 10px"><label style="font-size:12px;color:var(--sub);margin-right:6px">'+TX('发送给','Send to')+'</label><select id="sc_pick" onchange="scPick(this.value)">'+_pickOpts+'</select>'+(!S._activeClient?'<button class="btn ghost mini" data-action="leadNew" style="margin-left:6px">＋ '+TX('加为新线索','Add as lead')+'</button>':'')+'</div>'+(S.ext&&S.ext.some(function(x){return x.type==='product';})?'<div style="margin:8px 0 0"><label style="font-size:12px;color:var(--sub);margin-right:6px">'+TX('用产品','Use product')+'</label><select id="sc_prod" onchange="dealProdPick(this.value)"><option value="">'+TX('选择产品…','Pick product…')+'</option>'+S.ext.filter(function(x){return x.type==='product';}).map(function(x){return '<option value="'+x.id+'">'+esc(x.name)+'</option>';}).join('')+'</select></div>':'')+'<div class="out" id="sc_en">'+TX('选择场景并填变量后生成。','Pick a scene and fill vars.')+'</div><button class="btn ghost mini" data-action="copy" data-copy="sc_en" style="margin:8px 6px 0 0">'+TX('复制英文','Copy EN')+'</button><button class="btn ghost mini" data-action="saveScene" style="margin-top:8px">'+TX('存到话术库','Save to library')+'</button><button class="btn ghost mini" data-action="nav" data-view="lib" style="margin-top:8px">'+TX('查看话术库 →','View library →')+'</button><button class="btn ghost mini" data-action="nav" data-view="mails" style="margin-top:8px">'+TX('发送记录','Sent log')+'</button><button class="btn amber mini" data-action="bulkOpen" style="margin-top:8px">'+TX('群发助手','Bulk send')+'</button><button class="btn amber mini" data-action="sceneSend" data-ch="wa" style="margin:8px 6px 0 0">'+TX('发 WhatsApp','Send WA')+'</button><button class="btn ghost mini" data-action="sceneSend" data-ch="email" style="margin:8px 6px 0 0">'+TX('发邮件','Send Email')+'</button><h3 style="margin:14px 0 8px;font-size:15px">'+TX('中文（原理/禁忌）','Chinese (why/taboo)')+'</h3><div class="out zh" id="sc_zh"></div></div>';
  h+='</div>';
  return h;
 }
@@ -2945,7 +2945,7 @@ function renderSceneFields(){
  }
  var en=$('sc_en'),zh=$('sc_zh');if(en)en.textContent=TX('选择场景并填变量后生成。','Pick a scene and fill vars.');if(zh)zh.textContent='';
 }
-function scPick(id){S._activeClient=id||'';renderSceneFields();}
+function scPick(id){S._activeClient=id||'';renderSceneFields();}function dealProdPick(id){var p=extRow(id);if(!p)return;S._activeProduct=id;var sp=$('sc_product');if(sp)sp.value=p.name||'';var pr=$('sc_price');if(pr)pr.value=p.price||'';toast(TX('已带入产品','Product loaded'));}
 function genScene(){
  var sel=$('sc_sel');if(!sel)return;var k=sel.value;var sc=SCENES[k];
  if(!sc){toast(TX('请先选择场景','Pick a scene first'));return;}
@@ -3843,7 +3843,7 @@ function renderNav(){
  h+='<div style="margin-top:6px"><button class="btn ghost mini '+(S.hidden.length?'':'dim')+'" style="width:100%" '+(S.hidden.length?'':'disabled')+' data-action="navShowAll">'+TX('恢复全部模块','Restore all modules')+'</button></div>';
  var _sc=syncLoadCfg();var _sstat=(!_sc.url||!_sc.key||!_sc.syncKey)?TX('未配置','Not set'):(SYNC_AUTO?TX('自动同步中','Auto on'):TX('已就绪','Ready'));
  h+='<div style="margin-top:8px"><button class="btn ghost mini" style="width:100%" data-action="syncOpen">☁ '+TX('云同步','Cloud sync')+'：'+_sstat+'</button></div>';
- h+='<div style="margin-top:12px;text-align:center;font-size:11px;color:var(--sub);opacity:.85" title="'+TX('界面版本号；若不是 v43 说明浏览器缓存了旧版，请按 Ctrl+F5 强刷','Build stamp — if not v42, hard-refresh with Ctrl+F5')+'">v45</div>';
+ h+='<div style="margin-top:12px;text-align:center;font-size:11px;color:var(--sub);opacity:.85" title="'+TX('界面版本号；若不是 v43 说明浏览器缓存了旧版，请按 Ctrl+F5 强刷','Build stamp — if not v42, hard-refresh with Ctrl+F5')+'">v46</div>';
  $('nav').innerHTML=h;
 }
 function viewTasks(){
@@ -4570,11 +4570,11 @@ function viewDocs(){
  }
  var done=DOC_DEF.filter(function(x){return d.docs[x.id]==='done';}).length;
  var total=DOC_DEF.length;var pct=total?Math.round(done/total*100):0;
- var linked=(S.leads&&d.leadId)?S.leads.find(function(x){return x.id===d.leadId;}):null;
+ var linked=(S.leads&&d.leadId)?S.leads.find(function(x){return x.id===d.leadId;}):null;var lnk=dealLinked(d);
  h+='<div class="card" style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b>'+TX('备单进度','Doc readiness')+'</b><span class="tag score">'+done+' / '+total+'</span></div><div style="height:8px;background:var(--line);border-radius:6px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:var(--accent);border-radius:6px"></div></div><div class="hint" style="margin-top:8px">'+TX('核心类 7 张每票必出（发票 / 箱单 / 重量单 / 提单 / 空运单 / 保险单 / 产地证）；其余按交易条件（木包装 / 信用证 / 目的国 / 运输方式）出具。共 27 张，分 6 类。','Core 7 every shipment (Invoice/Packing/Weight/BL/AWB/Insurance/C.O.); rest by condition (wood/LC/dest/transport). 27 docs in 6 groups.')+'</div></div>';
  h+='<div class="card" style="margin-bottom:14px"><div class="grid g3"><select id="dealSel">'+(S.deals||[]).map(function(x){return '<option value="'+x.id+'"'+(x.id===d.id?' selected':'')+'>'+(x.cnee||TX('未命名交易','Untitled'))+'</option>';}).join('')+'</select><button class="btn ghost mini" data-action="dealNew">'+TX('新建交易','New')+'</button><button class="btn ghost mini" data-action="dealEdit">'+TX('编辑交易','Edit')+'</button></div>';
  h+='<div class="muted" style="font-size:12.5px;margin-top:6px">'+(linked?TX('已关联客户','Linked customer')+'：'+esc(linked.name)+'（'+esc(linked.market||'')+'）':'<span style="color:#b45309">'+TX('未关联客户（可在「编辑交易」里关联）','Not linked to a customer (use Edit deal)')+'</span>')+'</div>';
- h+='<div class="row" style="margin-top:10px"><button class="btn mini" data-action="docRec">'+TX('AI 智能选单','AI pick docs')+'</button><button class="btn mini" data-action="docCheck">'+TX('AI 一致性校验','AI consistency')+'</button><button class="btn mini ghost" data-action="docDef">'+TX('单证预设','Doc presets')+'</button><button class="btn mini ghost" data-action="docExportAll">'+TX('导出备单清单Excel','Export checklist')+'</button></div>';
+ h+='<div class="muted" style="font-size:12.5px;margin-top:4px">'+(lnk.supplier?TX('已关联供应商','Linked supplier')+'：'+esc(lnk.supplier.name):'<span style="color:#b45309">'+TX('未关联供应商','No supplier linked')+'</span>')+' · '+(lnk.product?TX('已关联产品','Linked product')+'：'+esc(lnk.product.name):'<span style="color:#b45309">'+TX('未关联产品','No product linked')+'</span>')+'</div>';h+='<div class="row" style="margin-top:10px"><button class="btn mini" data-action="docRec">'+TX('AI 智能选单','AI pick docs')+'</button><button class="btn mini" data-action="docCheck">'+TX('AI 一致性校验','AI consistency')+'</button><button class="btn mini ghost" data-action="docDef">'+TX('单证预设','Doc presets')+'</button><button class="btn mini ghost" data-action="docExportAll">'+TX('导出备单清单Excel','Export checklist')+'</button></div>';
  if(S._recShow)h+=docRecPanel(d);
  if(S._chkShow)h+=docChkPanel(d);
  if(S._defShow)h+=docDefPanel();
@@ -4602,7 +4602,7 @@ function viewDocs(){
   if(dd){
    h+='<div class="card" style="margin-top:4px"><div class="shead" style="margin:0 0 8px"><div class="ic">'+ICON.docs+'</div><div><h2 style="font-size:16px">'+esc(dd.zh)+' · '+esc(dd.en)+'</h2><p>'+TX('共享字段已自动带入交易信息，只需补本单特有项。','Shared fields auto-filled from the deal; fill only doc-specific ones.')+'</p></div></div>';
    h+='<div class="grid g2">';
-   dd.fields.forEach(function(f){if(f==='name')return;var lbl=DOC_FIELDS[f]?DOC_FIELDS[f].l:f;var dv='';if(d.docVals&&d.docVals[dd.id]&&d.docVals[dd.id][f]!=null&&d.docVals[dd.id][f]!=='')dv=d.docVals[dd.id][f];else if(SHARED.indexOf(f)>=0)dv=(d[f]||'');else if(f==='desc')dv='Muslim prayer pillow';h+='<div class="field"><label>'+esc(lbl)+'</label><input id="doc_'+f+'" value="'+esc(dv)+'" placeholder="'+esc(lbl)+'"></div>';});
+   dd.fields.forEach(function(f){if(f==='name')return;var lbl=DOC_FIELDS[f]?DOC_FIELDS[f].l:f;var dv='';if(d.docVals&&d.docVals[dd.id]&&d.docVals[dd.id][f]!=null&&d.docVals[dd.id][f]!=='')dv=d.docVals[dd.id][f];else if(SHARED.indexOf(f)>=0)dv=(d[f]||'');else if(f==='desc'){var _pr=extRow(d&&d.productId);dv=_pr?((_pr.name||'')+(_pr.spec?(' '+_pr.spec):'')):'Muslim prayer pillow';}h+='<div class="field"><label>'+esc(lbl)+'</label><input id="doc_'+f+'" value="'+esc(dv)+'" placeholder="'+esc(lbl)+'"></div>';});
    h+='</div><div class="row" style="margin-top:10px"><button class="btn" data-action="docGen" data-id="'+dd.id+'">'+TX('生成单证草稿','Generate draft')+'</button></div>';
    if(S._docTpl){h+='<div id="docTplOut" style="margin-top:10px">'+S._docTpl+'</div><div class="row" style="margin-top:8px"><button class="btn ghost mini" data-action="copy" data-copy="docTplOut">'+TX('复制单证文本','Copy text')+'</button><button class="btn ghost mini" data-action="docPrint">'+TX('打印 / 导出PDF','Print / PDF')+'</button><button class="btn ghost mini" data-action="docExport" data-id="'+dd.id+'">'+TX('导出Excel','Export Excel')+'</button></div>';}
    else{h+='<div class="out muted" style="margin-top:10px">'+TX('填好变量点"生成单证草稿"。','Fill vars and tap Generate.')+'</div>';}
@@ -4637,7 +4637,7 @@ function docExport(id){
   if(f==='name')return S.me.name||'';
   if(d.docVals&&d.docVals[id]&&d.docVals[id][f]!=null&&d.docVals[id][f]!=='')return d.docVals[id][f];
   if(typeof SHARED!=='undefined'&&SHARED.indexOf(f)>=0)return (d&&d[f]!=null&&d[f]!=='')?d[f]:'';
-  if(f==='desc')return 'Muslim prayer pillow';
+  if(f==='desc'){var _pr=extRow(d&&d.productId);return _pr?((_pr.name||'')+(_pr.spec?(' '+_pr.spec):'')):'Muslim prayer pillow';}
   return '';
  };
  var rows='';
@@ -4696,7 +4696,7 @@ function lead360(id){
  var deals=(S.deals||[]).filter(function(d){return d.leadId===id;});
  var docDone=0,docPct=null;if(deals.length){var d0=deals[0];DOC_DEF.forEach(function(x){if(d0.docs&&d0.docs[x.id]==='done')docDone++;});docPct=Math.round(docDone/DOC_DEF.length*100);}
  var logs=((l.logs||[]).map(function(g){return '<div style="padding:4px 0;border-top:1px dashed var(--line);font-size:13px"><span class="tag b">'+esc(g.date)+'</span> '+esc(g.text)+'</div>';}).join(''))||'<div class="muted">'+TX('暂无跟进记录','No logs yet')+'</div>';
- var dlist=deals.length?deals.map(function(d){var dn=DOC_DEF.filter(function(x){return d.docs[x.id]==='done';}).length;return '<div style="padding:4px 0;border-top:1px dashed var(--line);font-size:13px">'+TX('交易','Deal')+'：'+(d.cnee||'—')+' · '+TX('单证','Docs')+' '+dn+'/'+DOC_DEF.length+'</div>';}).join(''):'<div class="muted">'+TX('暂无关联交易','No linked deal')+'</div>';
+ var dlist=deals.length?deals.map(function(d){var dn=DOC_DEF.filter(function(x){return d.docs[x.id]==='done';}).length;var _lk=dealLinked(d);var _extra=[];if(_lk.supplier)_extra.push(TX('供应商','Sup')+':'+esc(_lk.supplier.name));if(_lk.product)_extra.push(TX('产品','Prod')+':'+esc(_lk.product.name));var _supp=_extra.length?(' · '+_extra.join(' · ')):'';return '<div style="padding:4px 0;border-top:1px dashed var(--line);font-size:13px">'+TX('交易','Deal')+'：'+(d.cnee||'—')+' · '+TX('单证','Docs')+' '+dn+'/'+DOC_DEF.length+_supp+'</div>';}).join(''):'<div class="muted">'+TX('暂无关联交易','No linked deal')+'</div>';
  var x={id:l.id,name:l.name,stage:l.stage,score:scoreLead(l),days:days,follow:follow,market:l.market,docPct:docPct,action:''};
  var w=custNextWhere(x);
  var waBtn360=(l.wa&&/^\+?\d[\d\s\-]{5,}$/.test(l.wa))?'<button class="btn ghost" data-action="leadWa" data-id="'+id+'">WhatsApp</button>':'';
@@ -4737,15 +4737,15 @@ function lead360(id){
 }
 function lead360Save(id){var l=S.leads.find(function(x){return x.id===id;});if(!l)return;var g=function(i){var e=document.getElementById(i);return e?e.value.trim():'';};l.name=g('v360_name')||l.name;l.country=g('v360_country');l.market=g('v360_market');l.stage=g('v360_stage');l.wa=g('v360_wa');l.email=g('v360_email');l.product=g('v360_product');l.amount=g('v360_amount')||l.amount;l.source=g('v360_source');l.note=g('v360_note');var rsEl=document.getElementById('v360_repeatStatus');if(rsEl)l.repeatStatus=rsEl.value;var rfEl=document.getElementById('v360_referralStatus');if(rfEl)l.referralStatus=rfEl.value;var rbEl=document.getElementById('v360_referrer');if(rbEl)l.referrer=rbEl.value;var rnbEl=document.getElementById('v360_referralNote');if(rnbEl)l.referralNote=rnbEl.value;snapLeads();save('leads',S.leads);refreshAll();lead360(id);toast(TX('已保存修改','Saved'));}
 function dealNew(){
- var d={id:uid(),leadId:'',cnee:'',no:'INV-'+new Date().getFullYear()+'-'+(S.deals.length+1),date:todayStr(),amt:0,qty:0,pkg:0,gross:0,net:0,vessel:'',port:'',eta:'',incoterms:'FOB',transport:'sea',woodPkg:false,lc:false,destCountry:'',docs:{},docVals:{}};
+ var d={id:uid(),leadId:'',cnee:'',no:'INV-'+new Date().getFullYear()+'-'+(S.deals.length+1),date:todayStr(),amt:0,qty:0,pkg:0,gross:0,net:0,vessel:'',port:'',eta:'',incoterms:'FOB',transport:'sea',woodPkg:false,lc:false,destCountry:'',supplierId:'',productId:'',docs:{},docVals:{}};
  DOC_DEF.forEach(function(x){d.docs[x.id]='todo';});
  S.deals.push(d);S._dealId=d.id;save('deals',S.deals);save('_dealId',S._dealId);refreshAll();toast(TX('已新建交易','Deal created'));
 }
 function dealEdit(){
  var d=activeDeal();if(!d)return;
  var leads=(S.leads||[]).map(function(l){return '<option value="'+l.id+'"'+(l.id===d.leadId?' selected':'')+'>'+esc(l.name)+'</option>';}).join('');
- var body='<div class="modal-form"><label>'+TX('关联客户','Link customer')+'<select id="de_leadId"><option value="">'+TX('不关联','None')+'</option>'+leads+'</select></label>'
-  +'<label>'+TX('买方/Consignee','Buyer')+'<input id="de_cnee" value="'+esc(d.cnee||'')+'"></label>'
+ var suppliers=(S.ext||[]).filter(function(x){return x.type==='supplier';}).map(function(x){return '<option value="'+x.id+'"'+(x.id===d.supplierId?' selected':'')+'>'+esc(x.name)+'</option>';}).join('');var products=(S.ext||[]).filter(function(x){return x.type==='product';}).map(function(x){return '<option value="'+x.id+'"'+(x.id===d.productId?' selected':'')+'>'+esc(x.name)+'</option>';}).join('');var body='<div class="modal-form"><label>'+TX('关联客户','Link customer')+'<select id="de_leadId"><option value="">'+TX('不关联','None')+'</option>'+leads+'</select></label>'
+  +'<label>'+TX('关联供应商','Link supplier')+'<select id="de_supplierId"><option value="">'+TX('不关联','None')+'</option>'+suppliers+'</select></label>'+'<label>'+TX('关联产品','Link product')+'<select id="de_productId"><option value="">'+TX('不关联','None')+'</option>'+products+'</select></label>'+'<label>'+TX('买方/Consignee','Buyer')+'<input id="de_cnee" value="'+esc(d.cnee||'')+'"></label>'
   +'<label>'+TX('发票号','Invoice No.')+'<input id="de_no" value="'+esc(d.no||'')+'"></label>'
   +'<label>'+TX('日期','Date')+'<input id="de_date" type="date" value="'+esc(d.date||'')+'"></label>'
   +'<label>'+TX('金额 USD','Amount')+'<input id="de_amt" type="number" value="'+(d.amt||0)+'"></label>'
@@ -4760,7 +4760,7 @@ function dealEdit(){
  $('modalBody').innerHTML='<h3>'+TX('编辑交易','Edit deal')+'</h3>'+body;
  $('modal').classList.add('show');
  $('deSave').onclick=function(){
-  d.leadId=$('de_leadId').value;d.cnee=$('de_cnee').value.trim();d.no=$('de_no').value.trim();d.date=$('de_date').value;d.amt=parseFloat($('de_amt').value)||0;d.qty=parseFloat($('de_qty').value)||0;d.pkg=parseFloat($('de_pkg').value)||0;d.gross=parseFloat($('de_gross').value)||0;d.net=parseFloat($('de_net').value)||0;d.vessel=$('de_vessel').value.trim();d.port=$('de_port').value.trim();d.eta=$('de_eta').value.trim();
+  d.leadId=$('de_leadId').value;d.supplierId=$('de_supplierId').value;d.productId=$('de_productId').value;d.cnee=$('de_cnee').value.trim();d.no=$('de_no').value.trim();d.date=$('de_date').value;d.amt=parseFloat($('de_amt').value)||0;d.qty=parseFloat($('de_qty').value)||0;d.pkg=parseFloat($('de_pkg').value)||0;d.gross=parseFloat($('de_gross').value)||0;d.net=parseFloat($('de_net').value)||0;d.vessel=$('de_vessel').value.trim();d.port=$('de_port').value.trim();d.eta=$('de_eta').value.trim();
   save('deals',S.deals);refreshAll();closeModal();toast(TX('已更新','Updated'));
  };
 }
